@@ -13,24 +13,6 @@ $argon_version = !(wp_get_theme() -> Template) ? wp_get_theme() -> Version : wp_
 $GLOBALS['theme_version'] = $argon_version;
 $argon_assets_path = get_option("argon_assets_path");
 switch ($argon_assets_path) {
-    case "jsdelivr":
-	    $GLOBALS['assets_path'] = "https://cdn.jsdelivr.net/gh/solstice23/argon-theme@" . $argon_version;
-        break;
-    case "fastgit":
-	    $GLOBALS['assets_path'] = "https://raw.fastgit.org/solstice23/argon-theme/v" . $argon_version;
-        break;
-    case "sourcegcdn":
-	    $GLOBALS['assets_path'] = "https://gh.sourcegcdn.com/solstice23/argon-theme/v" . $argon_version;
-        break;
-	case "jsdelivr_gcore":
-	    $GLOBALS['assets_path'] = "https://gcore.jsdelivr.net/gh/solstice23/argon-theme@" . $argon_version;
-        break;
-	case "jsdelivr_fastly":
-	    $GLOBALS['assets_path'] = "https://fastly.jsdelivr.net/gh/solstice23/argon-theme@" . $argon_version;
-        break;
-	case "jsdelivr_cf":
-	    $GLOBALS['assets_path'] = "https://testingcf.jsdelivr.net/gh/solstice23/argon-theme@" . $argon_version;
-        break;
 	case "custom":
 		$GLOBALS['assets_path'] = preg_replace('/\/$/', '', get_option("argon_custom_assets_path"));
 		$GLOBALS['assets_path'] = preg_replace('/%theme_version%/', $argon_version, $GLOBALS['assets_path']);
@@ -125,36 +107,8 @@ if (version_compare($argon_last_version, $GLOBALS['theme_version'], '<' )){
 require_once(get_template_directory() . '/theme-update-checker/plugin-update-checker.php');
 $argon_update_source = get_option('argon_update_source');
 switch ($argon_update_source) {
-	case "stop":
-		break;
-    case "fastgit":
-	    $argonThemeUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://api.solstice23.top/argon/info.json?source=fastgit',
-			get_template_directory() . '/functions.php',
-			'argon'
-		);
-        break;
-    case "cfworker":
-	    $argonThemeUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://api.solstice23.top/argon/info.json?source=cfworker',
-			get_template_directory() . '/functions.php',
-			'argon'
-		);
-        break;
-	case "solstice23top":
-		$argonThemeUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://api.solstice23.top/argon/info.json?source=0',
-			get_template_directory() . '/functions.php',
-			'argon'
-		);
-		break;
-	case "github":
     default:
-		$argonThemeUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://raw.githubusercontent.com/solstice23/argon-theme/master/info.json',
-			get_template_directory() . '/functions.php',
-			'argon'
-		);
+		break;
 }
 
 //初次使用时发送安装量统计信息 (数据仅用于统计安装量)
@@ -168,7 +122,6 @@ function post_analytics_info(){
 				)
 			)
 		);
-		$result = file_get_contents('http://api.solstice23.top/argon_analytics/index.php?domain=' . urlencode($_SERVER['HTTP_HOST']) . '&version='. urlencode($GLOBALS['theme_version']), false, $contexts);
 		update_option('argon_has_inited', 'true');
 		return $result;
 	}else{
@@ -1858,7 +1811,7 @@ function get_avatar_by_qqnumber($avatar){
 	if (!empty($qqnumber)){
 		preg_match_all('/width=\'(.*?)\'/', $avatar, $preg_res);
 		$size = $preg_res[1][0];
-		return "<img src='https://q1.qlogo.cn/g?b=qq&s=640&nk=" . $qqnumber ."' class='avatar avatar-" . $size . " photo' width='" . $size . "' height='" . $size . "'>";
+		return "<img src=''>";
 	}
 	return $avatar;
 }
